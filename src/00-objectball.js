@@ -204,13 +204,48 @@ const playerNumbers = (teamName) => {
 }
 
 const playerStats = (playerName) => {
-    const player = Object.entries(getPlayers()).find(player => (player[0].toLowerCase() === playerName.toLowerCase()))[1];
+    const player = getArrayPlayersDetails().find(player => (player[0].toLowerCase() === playerName.toLowerCase()))[1];
     return player;
 }
 
 const bigShoeRebounds = () => {
-    const players = Object.entries(getPlayers())
+    const players = getArrayPlayersDetails()
     const largestShoe = players.map(player => player[1].shoe);
     const rebounds = players.find(player => player[1].shoe === Math.max(...largestShoe))[1].rebounds;
     return rebounds;
 }
+
+const mostPointsScored = () => {
+    const players = getArrayPlayersDetails();
+    const mostPoints = players.map(player => player[1].points);
+    const player = players.find(player => player[1].points === Math.max(...mostPoints))[0];
+    return player;
+}
+
+const winningTeam = () => {
+    const teams = Object.entries(Object.assign(gameObject()));
+    const home = Object.entries(homeTeam().players);
+    const away = Object.entries(awayTeam().players);
+    const homePoints = home.reduce((initialValue, player) => player[1].points + initialValue, 0)
+    const awayPoints = away.reduce((initialValue, player) => player[1].points + initialValue, 0)
+    if (homePoints > awayPoints) {
+        return teams[0][1].teamName;
+    } else {
+        return teams[1][1].teamName;
+    }
+}
+
+const playerWithLongestName = () => {
+    const players = getArrayPlayersDetails();
+    const arrayName = players.map(player => player[0].length);
+    const player = players.find(player => player[0].length === Math.max(...arrayName))[0]
+    return player;
+}
+
+const doesLongNameStealATon = () => {
+    const players = getArrayPlayersDetails();
+    const mostSteals = Math.max(...players.map(player => player[1].steals));
+    console.log(mostSteals)
+    return players.find(player => player[0] === playerWithLongestName())[1].steals === mostSteals;
+}
+console.log(doesLongNameStealATon());
